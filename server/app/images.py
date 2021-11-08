@@ -6,6 +6,8 @@ import pycountry
 import zipfile
 import cv2
 import pytesseract
+import uuid
+from app import dynamodb_handler
 
 pytesseract.pytesseract.tesseract_cmd='C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
@@ -54,6 +56,7 @@ def images():
                             (os.path.join(current_app.config['UPLOAD_FOLDER'], filename), filename, img_text + photo_image.get('image_description', 'unknown'))
                             )
                 db.commit()
+                dynamodb_handler.addItemToImages(str(uuid.uuid4()), os.path.join(current_app.config['UPLOAD_FOLDER'], filename), img_text + photo_image.get('image_description', 'unknown'))
                 with open(current_app.config['UPLOAD_FOLDER'] + filename, "wb") as photo_file_updated:
                     photo_file_updated.write(photo_image.get_file())
         close_db()

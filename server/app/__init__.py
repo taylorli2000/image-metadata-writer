@@ -34,6 +34,9 @@ def create_app(test_config=None):
     from . import images
     app.register_blueprint(images.bp)
     
+    from . import dynamodb_handler
+    app.register_blueprint(dynamodb_handler.bp)
+    
     from . import db
     db.init_app(app)
 
