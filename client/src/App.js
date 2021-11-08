@@ -53,24 +53,26 @@ const App = () => {
     });
     if (response.ok) {
       setFiles([]);
+      fetchDbPhotos();
     }
   };
 
+  const fetchDbPhotos = async () => {
+    const { entries } = await unzip("http://localhost:5000/images");
+    const photos = await Promise.all(
+      Object.entries(entries).map(async ([name, entry]) => {
+        const blob = await entry.blob();
+        const description = name.split("/");
+        return {
+          name: description[description.length - 1],
+          url: URL.createObjectURL(blob),
+        };
+      })
+    );
+    setDbPhotos(photos);
+  };
+
   useEffect(() => {
-    const fetchDbPhotos = async () => {
-      const { entries } = await unzip("http://localhost:5000/images");
-      const photos = await Promise.all(
-        Object.entries(entries).map(async ([name, entry]) => {
-          const blob = await entry.blob();
-          const description = name.split("/");
-          return {
-            name: description[description.length - 1],
-            url: URL.createObjectURL(blob),
-          };
-        })
-      );
-      setDbPhotos(photos);
-    };
     return fetchDbPhotos();
   }, []);
 
