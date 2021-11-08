@@ -19,6 +19,12 @@ You must set up the .flaskenv file:
 FLASK_APP=app<br/>
 FLASK_ENV=development<br/>
 
+You must set up the .env file:
+
+AWS_ACCESS_KEY_ID='access key'
+AWS_SECRET_ACCESS_KEY='secret key'
+REGION_NAME='region'
+
 In the client folder, install dependencies:
 
 ```shell
